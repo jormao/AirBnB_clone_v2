@@ -50,21 +50,24 @@ class HBNBCommand(cmd.Cmd):
         try:
             if len(args) == 0:
                 raise SyntaxError()
-            my_list = split(args)
+            my_list = args.split(" ")
             obj = eval("{}()".format(my_list[0]))
             for _args in my_list[1:]:
                 _args = _args.split("=")
+                _args[1] = _args[1].replace("_", " ")
                 try:
-                    _args[1] = _args[1].replace("_", " ")
-                    setattr(obj, _args[0], eval(_args[1]))
+                    _args[1] = eval(_args[1])
                 except Exception:
                     pass
+                setattr(obj, _args[0], _args[1])
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
         except NameError:
             print("** class doesn't exist **")
+        except IndexError:
+            pass
 
     def do_show(self, line):
         """Prints the string representation of an instance
