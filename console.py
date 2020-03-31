@@ -11,6 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+from shlex import quote
 
 
 class HBNBCommand(cmd.Cmd):
@@ -32,17 +33,32 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program at end of file"""
         return True
 
-    def do_create(self, line):
-        """Creates a new instance of BaseModel, saves it
+    def do_create(self, args):
+        """Update the def do_create(self, arg):
+        Command syntax:
+            create <Class name> <param 1> <param 2> <param 3>...
+        Param syntax:
+            <key name>=<value>
+        Value syntax:
+            String: "<value>"
+            Float: <unit>.<decimal>
+            Integer: <number>
         Exceptions:
             SyntaxError: when there is no args given
             NameError: when there is no object taht has the name
         """
         try:
-            if not line:
+            if len(args) == 0:
                 raise SyntaxError()
-            my_list = line.split(" ")
+            my_list = split(args)
             obj = eval("{}()".format(my_list[0]))
+            for _args in my_list[1:]:
+                _args = _args.split("=")
+                try:
+                    _args[1] = _args[1].replace("_", " ")
+                    setattr(obj, _args[0], eval(_args[1]))
+                except Exception:
+                    pass
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
@@ -247,7 +263,6 @@ class HBNBCommand(cmd.Cmd):
                     self.do_update(args)
         else:
             cmd.Cmd.default(self, line)
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
