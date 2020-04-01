@@ -23,8 +23,8 @@ class Place(BaseModel, Base):
         longitude: longitude in float
         amenity_ids: list of Amenity ids
     """
+    __tablename__ = "places"
     if getenv('HBNB_TYPE_STORAGE') == 'db':
-        __tablename__ = "places"
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
@@ -38,7 +38,7 @@ class Place(BaseModel, Base):
         amenity_ids = []
         reviews = relationship('Review', backref='place',
                                cascade='all, delete-orphan')
-    elif getenv('HBNB_TYPE_STORAGE') == 'file':
+    else:
         city_id = ""
         user_id = ""
         name = ""
@@ -59,7 +59,7 @@ class Place(BaseModel, Base):
             review_list = []
             rev_list = models.storage.all()
             for revs in rev_list:
-                if revs.place_id == self.id and\
-                   obj.__class__.__name__ == 'Review':
+                if revs.place_id == self.id and (
+                   obj.__class__.__name__ == 'Review'):
                     review_list.append(revs)
             return review_list

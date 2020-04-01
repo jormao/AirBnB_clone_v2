@@ -70,6 +70,6 @@ class DBStorage:
         if type(structure) is dict:
             query = self.__session.query(eval(cls))
             for _row in query.all():
-                key = "{}.{}".format(_row.__class__.__name__, _row.id)
+                key = "{}.{}".format(cls.__name__, _row.id)
                 structure[key] = _row
             return structure
