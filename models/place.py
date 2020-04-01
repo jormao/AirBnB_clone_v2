@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
+from models.review import Review
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship
@@ -53,10 +54,11 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
-            """Return a list of reviews instance
+            """returns the list of Review instances with
+            place_id equals to the current Place.id
             """
             review_list = []
-            rev_list = self.reviews
+            rev_list = models.storage.all(Review)
             for revs in rev_list:
                 if revs.place_id == Place.id:
                     review_list.append(revs)
