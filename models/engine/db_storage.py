@@ -41,8 +41,7 @@ class DBStorage:
         if cls:
             return self.get_data_from_table(cls, entities)
         for entity in all_classes:
-            entities = self.get_data_from_table(entity, entities)
-        self.__session.close()
+            entities = self.get_data_from_table(eval(entity), entities)
         return entities
 
     def new(self, obj):
@@ -68,8 +67,9 @@ class DBStorage:
         """returns data for the to_all class method.
         """
         if type(structure) is dict:
-            query = self.__session.query(eval(cls))
+            query = self.__session.query(cls)
             for _row in query.all():
                 key = "{}.{}".format(cls.__name__, _row.id)
                 structure[key] = _row
+            self.__session.close()
             return structure
