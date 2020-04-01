@@ -36,6 +36,8 @@ class Place(BaseModel, Base):
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         amenity_ids = []
+        reviews = relationship('Review', backref='place',
+                               cascade='all, delete-orphan')
     elif getenv('HBNB_TYPE_STORAGE') == 'file':
         city_id = ""
         user_id = ""
@@ -48,3 +50,14 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+    if getenv('HBNB_TYPE_STORAGE') is not 'db':
+        @property
+        def reviews(self):
+            """Return a list of reviews instance
+            """
+            review_list = []
+            rev_list = self.reviews
+            for revs in rev_list:
+                if revs.place_id == place.id:
+                    review_list.append(revs)
+            return review_list
