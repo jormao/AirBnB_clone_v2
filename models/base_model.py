@@ -67,7 +67,7 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-        if my_dict.pop('_sa_instance_state', None) != None:
+        if my_dict.pop('_sa_instance_state', None) is not None:
             del my_dict['_sa_instance_state']
         return my_dict
 
