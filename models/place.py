@@ -57,8 +57,9 @@ class Place(BaseModel, Base):
             place_id equals to the current Place.id
             """
             review_list = []
-            rev_list = models.storage.all(Review)
+            rev_list = models.storage.all()
             for revs in rev_list:
-                if revs.place_id == Place.id:
+                if revs.place_id == self.id and\
+                   obj.__class__.__name__ == 'Review':
                     review_list.append(revs)
             return review_list
