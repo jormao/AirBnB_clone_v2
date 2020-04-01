@@ -50,6 +50,7 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
     if getenv('HBNB_TYPE_STORAGE') is not 'db':
         @property
         def reviews(self):
@@ -58,6 +59,6 @@ class Place(BaseModel, Base):
             review_list = []
             rev_list = self.reviews
             for revs in rev_list:
-                if revs.place_id == place.id:
+                if revs.place_id == Place.id:
                     review_list.append(revs)
             return review_list
