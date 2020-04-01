@@ -23,7 +23,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        """Creates the engine to the database
+        """Creates the engine to the database.
         """
         var_eng = "{0}+{1}://{2}:{3}@{4}:3306/{5}".format(
             'mysql', 'mysqldb', getenv('HBNB_MYSQL_USER'),
@@ -35,7 +35,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """.....
+        """Returns a dictionary with all classes.
         """
         entities = dict()
         if cls:
@@ -65,7 +65,7 @@ class DBStorage:
         self.__session = scoped_session(Session)
 
     def get_data_from_table(self, cls, structure):
-        """...
+        """returns data for the to_all class method.
         """
         if type(structure) is dict:
             query = self.__session.query(eval(cls))
