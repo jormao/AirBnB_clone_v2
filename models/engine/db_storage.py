@@ -23,6 +23,8 @@ class DBStorage:
     __session = None
 
     def __init__(self):
+        """Creates the engine to the database
+        """
         var_eng = "{0}+{1}://{2}:{3}@{4}:3306/{5}".format(
             'mysql', 'mysqldb', getenv('HBNB_MYSQL_USER'),
             getenv('HBNB_MYSQL_PWD'), getenv('HBNB_MYSQL_HOST'),
