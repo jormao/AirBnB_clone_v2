@@ -20,6 +20,6 @@ class Review(BaseModel, Base):
         place_id = Column(String(60), ForeignKey('places.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     elif getenv('HBNB_TYPE_STORAGE') == 'file':
+        text = ""
         place_id = ""
         user_id = ""
-        text = ""
