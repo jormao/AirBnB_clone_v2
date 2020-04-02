@@ -84,7 +84,8 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(type(self.place.amenity_ids), list)
 
     @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') == 'db', "Should be work in db")
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in Filestorage")
     def test_save_Place(self):
         """test if the save works"""
         self.place.save()

@@ -63,7 +63,8 @@ class TestUser(unittest.TestCase):
         self.assertEqual(type(self.user.first_name), str)
 
     @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') == 'db', "Should be work in db")
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in Filestorage")
     def test_save_User(self):
         """test if the save works"""
         self.user.save()
