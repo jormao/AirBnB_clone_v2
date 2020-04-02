@@ -3,9 +3,16 @@
 from models.base_model import BaseModel, Base
 from models.review import Review
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, Float, String, ForeignKey
+from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from os import getenv
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('Places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True,
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -37,7 +44,10 @@ class Place(BaseModel, Base):
         longitude = Column(Float, nullable=True)
         amenity_ids = []
         reviews = relationship('Review', backref='place',
-                               cascade='all, delete-orphan')
+                               cascade='delete')
+        amenities = relationship('Amenity', secondary='place_amenity',
+                                 viewonly=False,
+                                 back_populates='place_amenities')
     else:
         city_id = ""
         user_id = ""
@@ -57,9 +67,27 @@ class Place(BaseModel, Base):
             place_id equals to the current Place.id
             """
             review_list = []
-            rev_list = models.storage.all()
+            rev_list = models.storage.all(Review).values()
             for revs in rev_list:
-                if revs.place_id == self.id and (
-                   revs.__class__.__name__ == 'Review'):
+                if revs.place_id == self.id:
                     review_list.append(revs)
             return review_list
+
+        @property
+        def amenities(self):
+            """returns the list of Amenities instances with
+            Place.amenities
+            """
+            amenities_list = []
+            rev_list = models.storage.all(Amenities).values()
+            for revs in rev_list:
+                if revs.place_id == self.id:
+                    amenities_list.append(revs)
+            return amenities_list
+
+        @amenities.setter
+        def amenities(self, obj):
+            """...
+            """
+            if obj.__class__.__name__ == 'Amenity':
+                amenity_ids.append(obj.id)
