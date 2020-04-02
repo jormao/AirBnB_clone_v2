@@ -84,9 +84,9 @@ class Place(BaseModel, Base):
                     amenities_list.append(revs)
             return amenities_list
 
-            @amenities.setter
-            def amenities(self, obj):
-                """...
-                """
-                if obj.__class__.__name__ == 'Amenity':
-                    self.amenity_ids.append(obj.id)
+        @amenities.setter
+        def amenities(self, obj):
+            """...
+            """
+            if obj.__class__.__name__ == 'Amenity':
+                self.amenity_ids.append(obj.id)
