@@ -13,6 +13,7 @@ from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
 
+
 @unittest.skipIf(
     os.getenv('HBNB_TYPE_STORAGE') != 'db', "Should be work in db")
 class TestDbStorage(unittest.TestCase):
