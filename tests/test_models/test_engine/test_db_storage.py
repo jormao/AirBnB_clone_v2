@@ -25,23 +25,15 @@ class TestDBStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Tests"""
-        cls.user = User()
-        cls.user.first_name = "Kev"
-        cls.user.last_name = "Yo"
-        cls.user.email = "1234@yahoo.com"
-        cls.storage = FileStorage()
+        cls.dbstorage = DBStorage()
+        cls.output = StringIO()
+        sys.stdout = cls.output
 
     @classmethod
     def teardown(cls):
         """at the end of the test this will tear it down"""
-        del cls.user
-
-    def tearDown(self):
-        """teardown"""
-        try:
-            os.remove("file.json")
-        except Exception:
-            pass
+        del cls.dbstorage
+        del cls.output
 
     def test_pep8_DBStorage(self):
         """Tests pep8 style"""
@@ -49,53 +41,38 @@ class TestDBStorage(unittest.TestCase):
         p = style.check_files(['models/engine/db_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_all(self):
-        """tests if all works in DB Storage"""
-        storage = FileStorage()
-        obj = storage.all()
-        self.assertIsNotNone(obj)
-        self.assertEqual(type(obj), dict)
-        self.assertIs(obj, storage._FileStorage__objects)
-
     def test_new(self):
-            """test when new is created"""
-            storage = FileStorage()
-            obj = storage.all()
-            user = User()
-            user.id = 123455
-            user.name = "Kevin"
-            storage.new(user)
-            key = user.__class__.__name__ + "." + str(user.id)
-            self.assertIsNotNone(obj[key])
+        """test when new is created"""
+        obj = State(name="California")
+        self.assertEqual(obj.name, "California")
 
-    def test_reload_dbtorage(self):
-            """
-            tests reload
-            """
-            self.storage.save()
-            Root = os.path.dirname(os.path.abspath("console.py"))
-            path = os.path.join(Root, "file.json")
-            with open(path, 'r') as f:
-                lines = f.readlines()
-            try:
-                os.remove(path)
-            except Exception:
-                pass
-            self.storage.save()
-            with open(path, 'r') as f:
-                lines2 = f.readlines()
-            self.assertEqual(lines, lines2)
-            try:
-                os.remove(path)
-            except Exception:
-                pass
-            with open(path, "w") as f:
-                f.write("{}")
-            with open(path, "r") as r:
-                for line in r:
-                    self.assertEqual(line, "{}")
-            self.assertIs(self.storage.reload(), None)
+    def test_new_user(self):
+        """test new user"""
+        new_user = User(email="mail@mail.com", password="mail")
+        self.assertTrue(new_user.email, "mail@mail.com")
 
+    def test_method(self):
+        """method exist"""
+        self.assertTrue(hasattr(self.dbstorage, "all"))
+        self.assertTrue(hasattr(self.dbstorage, "new"))
+        self.assertTrue(hasattr(self.dbstorage, "save"))
+        self.assertTrue(hasattr(self.dbstorage, "delete"))
+
+    def test_all(self):
+        """check all"""
+        storage.reload()
+        obj = storage.all()
+        self.assertisInstance(obj, dict)
+        self.assertEqual(len(obj), 0)
+        new = User(email="mail@mail.com", password="mail")
+        console = self.create()
+        console.onecmd("create State name=California")
+        result = storage.all("State")
+        self.assertTrue(len(obj) > 0)
+
+    def test_storage(self):
+        """ test storage is an instance"""
+        self.assertTrue(isinstance(storage.DBStorage))
 
 if __name__ == "__main__":
     unittest.main()
