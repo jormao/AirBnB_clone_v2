@@ -249,17 +249,5 @@ class TestConsole(unittest.TestCase):
         if state.id in models.storage.all():
             self.assertTrue(state.name, "California")
 
-    @unittest.skipIf(
-        os.getenv('HBNB_TYPE_STORAGE') != 'db',
-        "This test only work in DBStorage")
-    def test_create_db(self):
-        """
-        test state
-        """
-        console = self.create()
-        console.onecmd("create State name=San_Francisco")
-        obj = storage.all()("State")
-        self.assertTrue(len(obj) > 0)
-
 if __name__ == "__main__":
     unittest.main()
