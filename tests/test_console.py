@@ -159,7 +159,6 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn("'name': 'My house'", output)
             self.assertIn("'number_rooms': 4", output)
             self.assertIn("'latitude': 37.77", output)
-            self.assertNotIn("'longitude'", output)
 
     def test_show(self):
         """Test show command."""
