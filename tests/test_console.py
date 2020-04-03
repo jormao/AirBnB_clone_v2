@@ -89,6 +89,9 @@ class TestConsole(unittest.TestCase):
             self.assertEqual(
                 "[[User]", f.getvalue()[:7])
 
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in DBStorage"))
     def test_show(self):
         """Test show command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -187,6 +190,9 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("State.count()")
             self.assertEqual("0\n", f.getvalue())
 
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in DBStorage"))
     def test_z_show(self):
         """Test alternate show command inpout"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -208,6 +214,14 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("User.destroy(12345)")
             self.assertEqual(
                 "** no instance found **\n", f.getvalue())
+
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') != 'db',
+        "This test only work in DBStorage"))
+    def test_create_db(self):
+        state = State(name="California")
+        if state.id in models.storage.all():
+            self.assertTrue(state.name, "California")
 
     def test_update(self):
         """Test alternate destroy command inpout"""
