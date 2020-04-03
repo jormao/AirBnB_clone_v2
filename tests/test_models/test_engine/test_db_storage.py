@@ -21,6 +21,7 @@ from io import StringIO
        "This test only work in DBStorage")
 class TestDBStorage(unittest.TestCase):
     """this will test the DBStorage"""
+
     @classmethod
     def setUpClass(cls):
         """Tests"""
