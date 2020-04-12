@@ -12,20 +12,6 @@ env.hosts = [
 ]
 
 
-def do_pack():
-    """archive from the contents of the web_static folder
-    using do_pack function
-    """
-    local("mkdir -p versions")
-    try:
-        local("tar -cvzf versions/web_static_{}.tgz web_static/".format(
-            datetime.now().strftime("%Y%m%d%H%M%S")))
-        return "versions/web_static_{}.tgz web_static/".format(
-            datetime.now().strftime("%Y%m%d%H%M%S"))
-    except Exception:
-        return None
-
-
 def do_deploy(archive_path):
     """ script that distributes an archive to web servers
     """
@@ -34,7 +20,7 @@ def do_deploy(archive_path):
     try:
         name_ext = archive_path.split("/")
         only_name = name_ext[-1].split(".")
-        new_path = "/data/web_static/releases/" + only_name[0] + "/"
+        new_path = "/data/web_static/releases/" + only_name[0]
         put(archive_path, "/tmp/")
         run("sudo mkdir -p {}".format(new_path))
         run("sudo tar -xzf /tmp/{} -C {}".format(name_ext[-1], new_path))
