@@ -3,13 +3,27 @@
 """
 from fabric.operations import local, run, put
 from datetime import datetime
-from fabric.api import *
+from fabric.api import env
 from os import path
 env.user = 'ubuntu'
 env.hosts = [
     '35.229.126.169',
     '54.90.172.156',
 ]
+
+
+def do_pack():
+    """archive from the contents of the web_static folder
+    using do_pack function
+    """
+    local("mkdir -p versions")
+    try:
+        local("tar -cvzf versions/web_static_{}.tgz web_static/".format(
+            datetime.now().strftime("%Y%m%d%H%M%S")))
+        return "versions/web_static_{}.tgz web_static/".format(
+            datetime.now().strftime("%Y%m%d%H%M%S"))
+    except Exception:
+        return None
 
 
 def do_deploy(archive_path):
@@ -28,7 +42,7 @@ def do_deploy(archive_path):
         run("sudo mv {}/web_static/* {}/".format(new_path, new_path))
         run("sudo rm -rf {}/web_static".format(new_path))
         run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -s {} /data/web_static/current".format(new_path))
+        run("sudo ln -sf {} /data/web_static/current".format(new_path))
         print("New version deployed!")
         return True
     except Exception:
