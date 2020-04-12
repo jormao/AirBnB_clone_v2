@@ -34,7 +34,7 @@ def do_deploy(archive_path):
     try:
         name_ext = archive_path.split("/")
         only_name = name_ext[-1].split(".")
-        new_path = "/data/web_static/releases/" + only_name[0]
+        new_path = "/data/web_static/releases/" + only_name[0] + "/"
         put(archive_path, "/tmp/")
         run("sudo mkdir -p {}".format(new_path))
         run("sudo tar -xzf /tmp/{} -C {}".format(name_ext[-1], new_path))
@@ -45,5 +45,5 @@ def do_deploy(archive_path):
         run("sudo ln -s {} /data/web_static/current".format(new_path))
         print("New version deployed!")
         return True
-    except:
+    except Exception:
         return False
