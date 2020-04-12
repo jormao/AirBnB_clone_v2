@@ -3,7 +3,7 @@
 """
 from fabric.operations import local, run, put
 from datetime import datetime
-from fabric.api import env
+from fabric.api import *
 from os import path
 env.user = 'ubuntu'
 env.hosts = [
@@ -42,8 +42,8 @@ def do_deploy(archive_path):
         run("sudo mv {}/web_static/* {}/".format(new_path, new_path))
         run("sudo rm -rf {}/web_static".format(new_path))
         run("sudo rm -rf /data/web_static/current")
-        run("sudo ln -sf {} /data/web_static/current".format(new_path))
+        run("sudo ln -s {} /data/web_static/current".format(new_path))
         print("New version deployed!")
         return True
-    except Exception:
+    except:
         return False
