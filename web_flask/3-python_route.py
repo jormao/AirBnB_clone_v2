@@ -27,9 +27,17 @@ def hbnb():
 
 @app.route("/c/<text>")
 def c_is_fun(text):
+    strict_slashes = False
     """print C + text """
-    text = text.replace("_", " ")
     return "C " + text
+
+
+@app.route("/python/")
+@app.route("/python/<text>")
+def python_is_cool(text="is cool"):
+    """print Python + text """
+    text = text.replace("_", " ")
+    return "Python " + text
 
 if __name__ == "__main__":
     app.run(debug=True)
