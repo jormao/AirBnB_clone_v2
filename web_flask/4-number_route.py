@@ -39,5 +39,11 @@ def python_is_cool(text="is cool"):
     text = text.replace("_", " ")
     return "Python " + text
 
+
+@app.route("/number/<int:n>")
+def number_int(n):
+    """print number is int """
+    return str(n) + " is a number"
+
 if __name__ == "__main__":
     app.run(debug=True)
