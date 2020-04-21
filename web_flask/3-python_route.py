@@ -5,7 +5,8 @@ Routes:
     /: display “Hello HBNB!”
     /hbnb: display “HBNB”
     /c/<text>: display “C ” followed by the value of the text variable
-    (replace underscore _ symbols with a space)
+    /python/(<text>): display “Python ”, followed value of the text variable
+        The default value of text is “is cool”
 must use the option strict_slashes=False in your route definition
 """
 from flask import Flask
