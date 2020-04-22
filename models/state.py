@@ -6,7 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
-
+import models
 
 class State(BaseModel, Base):
     """This is the class for State
@@ -27,7 +27,7 @@ class State(BaseModel, Base):
             """Return a list of City instance
             """
             city_list = []
-            for _id, city in models.storage.all(City).values():
+            for city in models.storage.all(City).values():
                 if city.state_id == self.id:
                     city_list.append(city)
             return city_list
