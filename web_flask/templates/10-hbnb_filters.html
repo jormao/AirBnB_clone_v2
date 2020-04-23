@@ -23,7 +23,7 @@
 	      <li>
 		<h2>{{ state.name }}:</h2>
 		<ul>
-		  {% for city in states_cities|sort(attribute="name") %}	
+		  {% for city in cities|sort(attribute="name") %}	
 		  {% if state.id == city.state_id %}
 		  <li>{{ city.name }}</li>
 		  {% endif %}
