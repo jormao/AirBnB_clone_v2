@@ -27,7 +27,7 @@ Routes:
 """
 from flask import Flask, render_template
 from models import storage
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.url_map.strict_slashes = False
 
 
