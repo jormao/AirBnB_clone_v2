@@ -44,7 +44,8 @@ def hbnb_filters():
     amenities = storage.all("Amenity").values()
     cities = list()
     for state_city in states:
-        cities.append(state_city.cities)
+        for city in state_city.cities:
+            cities.append(city)
     return render_template('10-hbnb_filters.html', states=states,
                            amenities=amenities, cities=cities)
 
